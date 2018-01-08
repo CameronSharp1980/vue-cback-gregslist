@@ -9,3 +9,4 @@ CREATE TABLE sharpautos (
          price DECIMAL NOT NULL,
          PRIMARY KEY (id)
       );
+    --   fix decimal rounding
