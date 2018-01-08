@@ -21,3 +21,17 @@
 --          price DECIMAL(65,2) NOT NULL,
 --          PRIMARY KEY (id)
 --       );
+
+-- CREATE TABLE sharpanimals (
+--     id int NOT NULL AUTO_INCREMENT,
+--     title VARCHAR(255) NOT NULL,
+--     animalname VARCHAR(255) NOT NULL,
+--     species VARCHAR(255) NOT NULL,
+--     breed VARCHAR(255) NOT NULL,
+--     color VARCHAR(255) NOT NULL,
+--     animaldescription VARCHAR(255),
+--     medicalconcerns VARCHAR(255) NOT NULL,
+--     imageurl VARCHAR(255),
+--     price DECIMAL(65,2) NOT NULL,
+--     PRIMARY KEY (id)
+-- );
