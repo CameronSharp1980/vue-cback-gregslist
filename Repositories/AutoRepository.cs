@@ -25,7 +25,7 @@ namespace vue_cback_gregslist.Repositories
 
         public Auto GetById(int id)
         {
-            return _db.QueryFirstOrDefault<Auto>($"SELECT * FROM SharpAutos WHERE id = @id", id);
+            return _db.QueryFirstOrDefault<Auto>($"SELECT * FROM SharpAutos WHERE id = {id}", id);
         }
 
         public Auto Add(Auto auto)
@@ -53,11 +53,11 @@ namespace vue_cback_gregslist.Repositories
             //Queries for the first Auto that matches the id passed in. If it doesn't find it, it defaults to handle the error gracefully without crashing. If it finds the id, it updates the fields with the data you are sending.
             return _db.QueryFirstOrDefault<Auto>($@"
                 UPDATE SharpAutos SET  
-                    Name = @Name,
+                    Title = @Title,
                     Make = @Make,
                     Model = @Model,
                     Color = @Color,
-                    Description = @Description,
+                    AutoDescription = @AutoDescription,
                     ImageURL = @ImageURL,
                     Price = @Price
                 WHERE Id = {id};
@@ -66,8 +66,8 @@ namespace vue_cback_gregslist.Repositories
 
         public string FindByIdAndRemove(int id)
         {
-            var success = _db.Execute(@"
-                DELETE FROM SharpAutos WHERE Id = @id
+            var success = _db.Execute($@"
+                DELETE FROM SharpAutos WHERE Id = {id}
             ", id);
             return success > 0 ? "success" : "umm that didnt work";
         }
