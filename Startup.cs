@@ -33,6 +33,7 @@ namespace vue_cback_gregslist
             services.AddMvc();
             services.AddTransient<IDbConnection>(x => CreateDBContext());
             services.AddTransient<AutoRepository>();
+            services.AddTransient<AnimalRepository>();
             services.AddTransient<ProperyRepository>();
         }
 
