@@ -6,7 +6,18 @@
 --          color VARCHAR(255) NOT NULL,
 --          autodescription VARCHAR(255),
 --          imageurl VARCHAR(255),
---          price DECIMAL NOT NULL,
+--          price DECIMAL(65,2) NOT NULL,
 --          PRIMARY KEY (id)
 --       );
-    --   fix decimal rounding
+
+-- CREATE TABLE sharpproperties (
+--          id int NOT NULL AUTO_INCREMENT,
+--          title VARCHAR(255) NOT NULL,
+--          zoning VARCHAR(255) NOT NULL,
+--          squarefootage int NOT NULL,
+--          color VARCHAR(255) NOT NULL,
+--          propertydescription VARCHAR(255),
+--          imageurl VARCHAR(255),
+--          price DECIMAL(65,2) NOT NULL,
+--          PRIMARY KEY (id)
+--       );
