@@ -19,7 +19,7 @@ namespace vue_cback_gregslist
         public IConfiguration Configuration { get; }
 
         //Is readonly outside of the class. Writeable while class is not instantiated.
-        private readonly string _connectionString = ""; 
+        private readonly string _connectionString = "";
 
         public Startup(IConfiguration configuration)
         {
@@ -33,10 +33,12 @@ namespace vue_cback_gregslist
             services.AddMvc();
             services.AddTransient<IDbConnection>(x => CreateDBContext());
             services.AddTransient<AutoRepository>();
+            services.AddTransient<ProperyRepository>();
         }
 
-        private IDbConnection CreateDBContext(){
-            var connection = new MySqlConnection (_connectionString);
+        private IDbConnection CreateDBContext()
+        {
+            var connection = new MySqlConnection(_connectionString);
             connection.Open();
             return connection;
         }

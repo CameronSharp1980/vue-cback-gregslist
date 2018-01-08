@@ -1,1 +1,1 @@
-SELECT * FROM sharpautos;
+-- SELECT * FROM sharpautos;
