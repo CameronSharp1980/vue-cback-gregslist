@@ -32,8 +32,9 @@ namespace vue_cback_gregslist.Repositories
         {
             //INSERT INTO SharpProperties - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { Property.Name.... etc} is the object constructor that will be used in the insert query.
+            System.Console.WriteLine("Property in repo: " + property);
             int id = _db.ExecuteScalar<int>(@"
-                        INSERT INTO SharpProperties (Title, Zoning, SquareFootage, Color, PropertyDescription, ImageURL, Price)
+                        INSERT INTO sharpproperties (Title, Zoning, SquareFootage, Color, PropertyDescription, ImageURL, Price)
                         VALUES(@Title, @Zoning, @SquareFootage, @Color, @PropertyDescription, @ImageURL, @Price);
                         SELECT LAST_INSERT_ID()", new
             {

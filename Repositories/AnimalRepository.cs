@@ -32,19 +32,20 @@ namespace vue_cback_gregslist.Repositories
         {
             //INSERT INTO sharpanimals - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { animal.Name.... etc} is the object constructor that will be used in the insert query.
-            int id = _db.ExecuteScalar<int>("INSERT INTO SharpAnimals (Title, AnimalName, Species, Breed, Color, AnimalDescription, MedicalConcerns ImageURL, Price)"
-                        + " VALUES(@Title, @AnimalName, @Species @Breed, @Color, @AnimalDescription, @MedicalConcerns, @ImageURL, @Price); SELECT LAST_INSERT_ID()", new
-                        {
-                            animal.Title,
-                            animal.AnimalName,
-                            animal.Species,
-                            animal.Breed,
-                            animal.Color,
-                            animal.AnimalDescription,
-                            animal.MedicalConcerns,
-                            animal.ImageURL,
-                            animal.Price
-                        });
+            int id = _db.ExecuteScalar<int>($@"INSERT INTO sharpanimals (Title, AnimalName, Species, Breed, Color, AnimalDescription, MedicalConcerns, ImageURL, Price)
+                                            VALUES(@Title, @AnimalName, @Species, @Breed, @Color, @AnimalDescription, @MedicalConcerns, @ImageURL, @Price);
+                                            SELECT LAST_INSERT_ID()", new
+            {
+                animal.Title,
+                animal.AnimalName,
+                animal.Species,
+                animal.Breed,
+                animal.Color,
+                animal.AnimalDescription,
+                animal.MedicalConcerns,
+                animal.ImageURL,
+                animal.Price
+            });
             animal.Id = id;
             return animal;
 

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using vue_cback_gregslist.Models;
 using vue_cback_gregslist.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vue_cback_gregslist.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class PropertiesController : Controller
     {
@@ -35,6 +37,7 @@ namespace vue_cback_gregslist.Controllers
         [HttpPost]
         public Property Post([FromBody]Property property)
         {
+            System.Console.WriteLine("Property: " + property);
             return db.Add(property);
         }
 
