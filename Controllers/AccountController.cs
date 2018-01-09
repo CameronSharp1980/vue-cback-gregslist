@@ -5,6 +5,8 @@ using vue_cback_gregslist.Models;
 using vue_cback_gregslist.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace vue_cback_gregslist.Controllers
 {
@@ -26,9 +28,7 @@ namespace vue_cback_gregslist.Controllers
                 UserReturnModel user = _db.Register(creds);
                 if (user != null)
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
-                    var userIdentity = new ClaimsIdentity(claims, "login");
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    ClaimsPrincipal principal = user.SetClaims();
                     await HttpContext.SignInAsync(principal);
                     return user;
                 }
@@ -43,19 +43,61 @@ namespace vue_cback_gregslist.Controllers
                 UserReturnModel user = _db.Login(creds);
                 if (user != null)
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
-                    var userIdentity = new ClaimsIdentity(claims, "login");
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    ClaimsPrincipal principal = user.SetClaims();
                     await HttpContext.SignInAsync(principal);
                     return user;
                 }
             }
             return null;
         }
-        // [HttpGet("authenticate")]
-        // public async Task<UserReturnModel> Authenticate()
-        // {
-            
-        // }
+
+        [HttpDelete("logout")]
+        public async void Logout()
+        {
+            await HttpContext.SignOutAsync();
+        }
+
+        [HttpGet("authenticate")]
+        public UserReturnModel Authenticate()
+        {
+            var user = HttpContext.User;
+            var id = user.Identity.Name;
+            // var email = user.Claims.Where(c => c.Type == ClaimTypes.Email)
+            //        .Select(c => c.Value).SingleOrDefault();
+            return _db.GetUserById(id);
+        }
+
+        [Authorize]
+        [HttpPut]
+        public UserReturnModel UpdateAccount([FromBody]UserReturnModel user)
+        {
+            var id = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Name)
+                   .Select(c => c.Value).SingleOrDefault();
+            var sessionUser = _db.GetUserById(id);
+
+            if (sessionUser.Id == user.Id)
+            {
+                return _db.UpdateUser(user);
+            }
+            return null;
+        }
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public string ChangePassword([FromBody]ChangeUserPasswordModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var id = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Name)
+                       .Select(c => c.Value).SingleOrDefault();
+                var sessionUser = _db.GetUserById(id);
+
+                if (sessionUser.Id == user.Id)
+                {
+                    return _db.ChangeUserPassword(user);
+                }
+            }
+            return "How did you even get here?";
+        }
     }
 }

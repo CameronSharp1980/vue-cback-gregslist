@@ -50,16 +50,67 @@ namespace vue_cback_gregslist.Repositories
                 var valid = BCrypt.Net.BCrypt.Verify(creds.Password, user.Password);
                 if (valid)
                 {
-                    return new UserReturnModel()
-                    {
-                        Id = user.Id,
-                        Username = user.Username,
-                        Email = user.Email
-                    };
+                    return user.GetReturnModel();
                 }
             }
             return null;
         }
 
+        //Shouldn't lookup by email?
+        //If you want to use below you need to re-enable a line found in
+        // UserReturnModel.cs
+        #region GetUserByEmail-Function-Unused
+        // internal UserReturnModel GetUserByEmail(string email)
+        // {
+        //     User user = _db.QueryFirstOrDefault<User>(@"
+        //         SELECT * FROM sharpusers WHERE email = @Email
+        //     ", new { email });
+        //     return user.GetReturnModel();
+        // }
+        #endregion
+
+        internal UserReturnModel GetUserById(string id)
+        {
+            User savedUser = _db.QueryFirstOrDefault<User>(@"
+            SELECT * FROM sharpusers WHERE id = @id
+            ", new { id });
+            return savedUser.GetReturnModel();
+        }
+
+        internal UserReturnModel UpdateUser(UserReturnModel user)
+        {
+            var i = _db.Execute(@"
+                UPDATE sharpusers SET
+                    email = @Email,
+                    username = @Username
+                WHERE id = @id
+            ", user);
+            if (i > 0)
+            {
+                return user;
+            }
+            return null;
+
+        }
+
+        internal string ChangeUserPassword(ChangeUserPasswordModel user)
+        {
+            User savedUser = _db.QueryFirstOrDefault<User>(@"
+            SELECT * FROM sharpusers WHERE id = @id
+            ", user);
+
+            var valid = BCrypt.Net.BCrypt.Verify(user.OldPassword, savedUser.Password);
+            if (valid)
+            {
+                user.NewPassword = BCrypt.Net.BCrypt.HashPassword(user.NewPassword);
+                var i = _db.Execute(@"
+                    UPDATE sharpusers SET
+                        password = @NewPassword
+                    WHERE id = @id
+                ", user);
+                return "Good Job";
+            }
+            return "Umm nope!";
+        }
     }
 }

@@ -18,15 +18,13 @@ namespace vue_cback_gregslist
     public class Startup
     {
         //Is readonly outside of the class. Writeable while class is not instantiated.
-        private readonly string _connectionString = "";
+        private readonly string _connectionString;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             _connectionString = configuration.GetSection("DB").GetValue<string>("mySQLConnectionString");
         }
         public IConfiguration Configuration { get; }
-
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -40,6 +38,19 @@ namespace vue_cback_gregslist
                         return Task.CompletedTask;
                     };
             });
+
+            services.AddCors(options =>
+                        {
+                            options.AddPolicy("CorsDevPolicy", builder =>
+                            {
+                                builder
+                                .AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials();
+                            });
+                        });
+
             services.AddMvc();
             services.AddTransient<IDbConnection>(x => CreateDBContext());
             services.AddTransient<UserRepository>();
@@ -61,7 +72,12 @@ namespace vue_cback_gregslist
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors("CorsDevPolicy");
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseAuthentication();
             app.UseMvc();
         }
