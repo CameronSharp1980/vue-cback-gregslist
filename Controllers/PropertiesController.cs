@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace vue_cback_gregslist.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class PropertiesController : Controller
     {
@@ -34,6 +33,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // POST api/values
+        [Authorize]
         [HttpPost]
         public Property Post([FromBody]Property property)
         {
@@ -42,6 +42,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // PUT api/values/5
+        [Authorize]
         [HttpPut("{id}")]
         public Property Put(int id, [FromBody]Property property)
         {
@@ -53,6 +54,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // DELETE api/values/5
+        [Authorize]
         [HttpDelete("{id}")]
         public string Delete(int id)
         {

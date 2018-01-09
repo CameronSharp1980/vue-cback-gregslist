@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using vue_cback_gregslist.Models;
 using vue_cback_gregslist.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vue_cback_gregslist.Controllers
 {
@@ -32,6 +33,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // POST api/values
+        [Authorize]
         [HttpPost]
         public Animal Post([FromBody]Animal animal)
         {
@@ -39,6 +41,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // PUT api/values/5
+        [Authorize]
         [HttpPut("{id}")]
         public Animal Put(int id, [FromBody]Animal animal)
         {
@@ -50,6 +53,7 @@ namespace vue_cback_gregslist.Controllers
         }
 
         // DELETE api/values/5
+        [Authorize]
         [HttpDelete("{id}")]
         public string Delete(int id)
         {
