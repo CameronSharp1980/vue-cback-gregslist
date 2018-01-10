@@ -1,5 +1,6 @@
 <template>
     <div class="autos-form">
+        <!-- try making v-if form inputs to be able to use this one form for all listings -->
         <form class="form" @submit.prevent="submitPosting('autos')">
             <div class="form-group">
                 <label for="title">Title: </label>

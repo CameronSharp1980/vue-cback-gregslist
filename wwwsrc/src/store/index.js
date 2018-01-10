@@ -124,14 +124,30 @@ var store = new Vuex.Store({
                 })
         },
         removeListing({ commit, dispatch }, payload) {
-            api.delete(payload.strArg, payload.resultId)
-            .then(res => {
-                if(res){
-                    commit('setMessage', `${payload.strArg} removal successful`)
-                }else{
-                    commit('setMessage', `${palyoad.strArg} was not removed`)
-                }
-            })
+            debugger
+            if (payload.currentUser.id == payload.result.creatorId) {
+                api.delete(`${payload.strArg}/${payload.result.id}`)
+                    .then(res => {
+                        if (res) {
+                            commit('setMessage', `${payload.strArg} removal successful`)
+                            return res
+                        } else {
+                            commit('setMessage', `${payload.strArg} was not removed`)
+                            return res
+                        }
+                    })
+                    .catch(err => {
+                        commit('handleError', err)
+                    })
+                    .then(res => {
+                        dispatch('getAll', payload.strArg)
+                    })
+                    .catch(err => {
+                        commit('handleError', err)
+                    })
+            } else {
+                commit('handleError', { message: 'You are not the owner of that listing, and therefore not authorized to remove that listing.' })
+            }
         }
         //#endregion
     }
