@@ -33,8 +33,8 @@ namespace vue_cback_gregslist.Repositories
             //INSERT INTO SharpAutos - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { Auto.Name.... etc} is the object constructor that will be used in the insert query.
             int id = _db.ExecuteScalar<int>(@"
-                        INSERT INTO SharpAutos (CreatorId, Title, Make, Model, Year, Color, AutoDescription, Location, ImageURL, Price)
-                        VALUES(@CreatorId, @Title, @Make, @Model, @Year, @Color, @AutoDescription, @Location, @ImageURL, @Price);
+                        INSERT INTO SharpAutos (CreatorId, Title, Make, Model, Year, Color, ListingDescription, ListingLocation, ImageURL, Price)
+                        VALUES(@CreatorId, @Title, @Make, @Model, @Year, @Color, @ListingDescription, @ListingLocation, @ImageURL, @Price);
                         SELECT LAST_INSERT_ID()", new
             {
                 auto.CreatorId,
@@ -43,8 +43,8 @@ namespace vue_cback_gregslist.Repositories
                 auto.Model,
                 auto.Year,
                 auto.Color,
-                auto.AutoDescription,
-                auto.Location,
+                auto.ListingDescription,
+                auto.ListingLocation,
                 auto.ImageURL,
                 auto.Price
             });
@@ -63,8 +63,8 @@ namespace vue_cback_gregslist.Repositories
                     Model = @Model,
                     Year = @Year,
                     Color = @Color,
-                    AutoDescription = @AutoDescription,
-                    Location = @Location,
+                    ListingDescription = @ListingDescription,
+                    ListingLocation = @ListingLocation,
                     ImageURL = @ImageURL,
                     Price = @Price
                 WHERE Id = {id};

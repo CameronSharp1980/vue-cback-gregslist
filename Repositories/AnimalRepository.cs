@@ -32,16 +32,18 @@ namespace vue_cback_gregslist.Repositories
         {
             //INSERT INTO sharpanimals - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { animal.Name.... etc} is the object constructor that will be used in the insert query.
-            int id = _db.ExecuteScalar<int>($@"INSERT INTO sharpanimals (Title, AnimalName, Species, Breed, Color, AnimalDescription, MedicalConcerns, ImageURL, Price)
-                                            VALUES(@Title, @AnimalName, @Species, @Breed, @Color, @AnimalDescription, @MedicalConcerns, @ImageURL, @Price);
+            int id = _db.ExecuteScalar<int>($@"INSERT INTO sharpanimals (Title, AnimalName, Species, Breed, Age, Color, ListingDescription, ListingLocation, MedicalConcerns, ImageURL, Price)
+                                            VALUES(@Title, @AnimalName, @Species, @Breed, @Age, @Color, @ListingDescription, @ListingLocation, @MedicalConcerns, @ImageURL, @Price);
                                             SELECT LAST_INSERT_ID()", new
             {
                 animal.Title,
                 animal.AnimalName,
                 animal.Species,
                 animal.Breed,
+                animal.Age,
                 animal.Color,
-                animal.AnimalDescription,
+                animal.ListingDescription,
+                animal.ListingLocation,
                 animal.MedicalConcerns,
                 animal.ImageURL,
                 animal.Price
@@ -56,12 +58,15 @@ namespace vue_cback_gregslist.Repositories
             //Queries for the first Animal that matches the id passed in. If it doesn't find it, it defaults to handle the error gracefully without crashing. If it finds the id, it updates the fields with the data you are sending.
             return _db.QueryFirstOrDefault<Animal>($@"
                 UPDATE SharpAnimals SET  
+                    CreatorId = @CreatorId,
                     Title = @Title,
                     AnimalName = @AnimalName,
                     Species = @Species,
                     Breed = @Breed,
+                    Age = @Age,
                     Color = @Color,
-                    AnimalDescription = @AnimalDescription,
+                    ListingDescription = @ListingDescription,
+                    ListingLocation = @ListingLocation,
                     MedicalConcerns = @MedicalConcerns,
                     ImageURL = @ImageURL,
                     Price = @Price
