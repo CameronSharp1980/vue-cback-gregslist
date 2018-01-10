@@ -1,11 +1,12 @@
 <template>
   <div class="home">
     <h1>HOME</h1>
+    <!-- current user is {{currentUser.id}} -->
     <div>
 
       <button @click="togglePostCategories">+</button>
       <div v-if=showCategories>
-        Categories go here
+        <button @click="getAll('autos')">Get Autos</button>
       </div>
 
       <button @click="toggleAutosForm">Show Autos Form</button>
@@ -14,13 +15,18 @@
       </div>
 
       <div v-if="showSearchResults">
-        <div class="col-sm-3" v-for="result in results">
-          {{result.Title}}
+        <div class="col-sm-3 thumbnail" v-for="result in searchResults">
+          <img :src="result.imageURL"> {{result.title}} ${{result.price}}
+          <div v-if="currentUser.id === result.creatorId">
+            <button @click="removeListing('autos', result.id)">Remove</button>
+          </div>
         </div>
       </div>
 
     </div>
-    <button @click="logout">LOGOUT</button>
+    <div>
+      <button @click="logout">LOGOUT</button>
+    </div>
   </div>
 </template>
 
@@ -48,11 +54,21 @@
       },
       toggleAutosForm() {
         this.showAutosForm = !this.showAutosForm
+      },
+      getAll(strArg) {
+        this.$store.dispatch('getAll', strArg)
+        this.showSearchResults = !this.showSearchResults
+      },
+      removeListing(strArg, result) {
+        this.$store.dispatch('removeListing', { strArg: strArg, resultId: result })
       }
     },
     computed: {
-      autos() {
+      searchResults() {
         return this.$store.state.searchResults
+      },
+      currentUser() {
+        return this.$store.state.user
       }
     },
     components: {

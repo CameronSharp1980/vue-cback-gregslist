@@ -17,7 +17,7 @@
       }
     },
     mounted() {
-      // this.$store.dispatch('authenticate')
+      this.$store.dispatch('authenticate')
     },
     components: {
       Error,

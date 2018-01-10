@@ -1,10 +1,13 @@
 -- CREATE TABLE sharpautos (
 --          id int NOT NULL AUTO_INCREMENT,
+--          creatorId int NOT NULL,
 --          title VARCHAR(255) NOT NULL,
 --          make VARCHAR(255) NOT NULL,
 --          model VARCHAR(255) NOT NULL,
+--          year int,
 --          color VARCHAR(255) NOT NULL,
 --          autodescription VARCHAR(255),
+--          location VARCHAR(255) NOT NULL,
 --          imageurl VARCHAR(255),
 --          price DECIMAL(65,2) NOT NULL,
 --          PRIMARY KEY (id)

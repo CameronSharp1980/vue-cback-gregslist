@@ -22,7 +22,7 @@ var store = new Vuex.Store({
         error: {},
         message: "",
         user: {},
-        searchResults: {},
+        searchResults: [],
         userPostings: {}
     },
     mutations: {
@@ -31,9 +31,14 @@ var store = new Vuex.Store({
         },
         setUser(state, user) {
             state.user = user
+            // console.log(state.user)
         },
         setMessage(state, msg) {
             state.message = msg
+        },
+        setSearchResults(state, results) {
+            state.searchResults = results
+            // console.log(state.searchResults)
         }
 
     },
@@ -58,8 +63,12 @@ var store = new Vuex.Store({
         submitLogin({ commit, dispatch }, user) {
             account.post('login', user)
                 .then(res => {
-                    commit('setUser', res.data.data)
-                    router.push({ name: "Home" })
+                    if (res.data) {
+                        commit('setUser', res.data)
+                        router.push({ name: "Home" })
+                    } else {
+                        router.push({ name: "Login" })
+                    }
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -68,7 +77,7 @@ var store = new Vuex.Store({
         submitRegister({ commit, dispatch }, newUser) {
             account.post('register', newUser)
                 .then(res => {
-                    commit('setUser', res.data.data)
+                    commit('setUser', res.data)
                     router.push({ name: "Home" })
                 })
                 .catch(err => {
@@ -89,18 +98,40 @@ var store = new Vuex.Store({
 
         //#region Listing Methods
         submitPosting({ commit, dispatch }, payload) {
+            payload.listing.CreatorId = payload.creatorId
+            console.log(payload.listing)
             api.post(payload.strArg, payload.listing)
                 .then(res => {
                     if (res) {
                         //res = whole posting or res.data = whole posting?
-                        commit('setMessage', `${payload.strArg} Posting Successful`)
+                        commit('setMessage', `${payload.strArg} posting successful`)
                     } else {
-                        commit('setMessage', `${payload.strArg} Posting Unsuccessful`)
+                        commit('setMessage', `${payload.strArg} posting was not successful`)
                     }
                 })
                 .catch(err => {
                     commit('handleError', err)
                 })
+        },
+        getAll({ commit, dispatch }, strArg) {
+            api(strArg)
+                .then(res => {
+                    console.log(res)
+                    commit('setSearchResults', res.data)
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
+        },
+        removeListing({ commit, dispatch }, payload) {
+            api.delete(payload.strArg, payload.resultId)
+            .then(res => {
+                if(res){
+                    commit('setMessage', `${payload.strArg} removal successful`)
+                }else{
+                    commit('setMessage', `${palyoad.strArg} was not removed`)
+                }
+            })
         }
         //#endregion
     }

@@ -33,15 +33,18 @@ namespace vue_cback_gregslist.Repositories
             //INSERT INTO SharpAutos - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { Auto.Name.... etc} is the object constructor that will be used in the insert query.
             int id = _db.ExecuteScalar<int>(@"
-                        INSERT INTO SharpAutos (Title, Make, Model, Color, AutoDescription, ImageURL, Price)
-                        VALUES(@Title, @Make, @Model, @Color, @AutoDescription, @ImageURL, @Price);
+                        INSERT INTO SharpAutos (CreatorId, Title, Make, Model, Year, Color, AutoDescription, Location, ImageURL, Price)
+                        VALUES(@CreatorId, @Title, @Make, @Model, @Year, @Color, @AutoDescription, @Location, @ImageURL, @Price);
                         SELECT LAST_INSERT_ID()", new
             {
+                auto.CreatorId,
                 auto.Title,
                 auto.Make,
                 auto.Model,
+                auto.Year,
                 auto.Color,
                 auto.AutoDescription,
+                auto.Location,
                 auto.ImageURL,
                 auto.Price
             });
@@ -54,11 +57,14 @@ namespace vue_cback_gregslist.Repositories
             //Queries for the first Auto that matches the id passed in. If it doesn't find it, it defaults to handle the error gracefully without crashing. If it finds the id, it updates the fields with the data you are sending.
             return _db.QueryFirstOrDefault<Auto>($@"
                 UPDATE SharpAutos SET  
+                    CreatorId = @CreatorId,
                     Title = @Title,
                     Make = @Make,
                     Model = @Model,
+                    Year = @Year,
                     Color = @Color,
                     AutoDescription = @AutoDescription,
+                    Location = @Location,
                     ImageURL = @ImageURL,
                     Price = @Price
                 WHERE Id = {id};

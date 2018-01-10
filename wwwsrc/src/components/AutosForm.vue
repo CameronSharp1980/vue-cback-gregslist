@@ -18,8 +18,16 @@
                 <input class="form-control" type="text" name="color" v-model='auto.color' required>
             </div>
             <div class="form-group">
+                <label for="year">Year: </label>
+                <input class="form-control" type="text" name="year" v-model='auto.year' required>
+            </div>
+            <div class="form-group">
                 <label for="autoDescription">Description: </label>
                 <input class="form-control" type="text" name="autoDescription" v-model='auto.autoDescription' required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location: </label>
+                <input class="form-control" type="text" name="location" v-model='auto.location' required>
             </div>
             <div class="form-group">
                 <label for="imageURL">ImageURL: </label>
@@ -45,8 +53,10 @@
                     title: '',
                     make: '',
                     model: '',
+                    year: '',
                     color: '',
                     autoDescription: '',
+                    location: '',
                     imageURL: '',
                     price: ''
                 }
@@ -54,11 +64,15 @@
         },
         methods: {
             submitPosting(strArg) {
-                this.$store.dispatch('submitPosting', { listing: this.auto, strArg: strArg })
+                console.log(this.currentUser)
+                this.$store.dispatch('submitPosting', { listing: this.auto, strArg: strArg, creatorId: this.currentUser.id })
             }
 
         },
         computed: {
+            currentUser() {
+                return this.$store.state.user
+            }
         }
     }
 
