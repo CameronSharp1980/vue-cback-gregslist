@@ -22,6 +22,7 @@ var store = new Vuex.Store({
         error: {},
         message: "",
         user: {},
+        formState = "",
         searchResults: [],
         userPostings: {}
     },

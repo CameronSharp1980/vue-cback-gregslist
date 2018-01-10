@@ -9,8 +9,8 @@
         <button @click="getAll('autos')">Get Autos</button>
       </div>
 
-      <button @click="toggleAutosForm">Show Autos Form</button>
-      <div v-if="showAutosForm">
+      <button @click="toggleListingForm('submit', 'auto')">Show Autos Form</button>
+      <div v-if="showListingForm">
         <AutosForm></AutosForm>
       </div>
 
@@ -20,7 +20,7 @@
           <div v-if="currentUser.id === result.creatorId">
             <!-- add a category prop to all models that has it's category(ie. autos) and change 'autos' in removeListing to be result.category -->
             <button @click="removeListing('autos', result)">Remove</button>
-            <button @click="updateListing('autos')">Update</button>
+            <button @click="toggleListingForm('update', auto)">Update</button>
           </div>
         </div>
       </div>
@@ -33,15 +33,14 @@
 </template>
 
 <script>
-  import AutosForm from './AutosForm'
+  import ListingForm from './ListingForm'
   export default {
     name: 'Home',
     data() {
       return {
         showCategories: false,
-        showAutosForm: false,
+        showListingForm: false,
         showSearchResults: false
-
       }
     },
     mounted() {
@@ -54,8 +53,9 @@
       togglePostCategories() {
         this.showCategories = !this.showCategories
       },
-      toggleAutosForm() {
-        this.showAutosForm = !this.showAutosForm
+      toggleListingForm() {
+        this.showListingForm = !this.showListingForm
+        //dispatch autos to store to change the form state
       },
       getAll(strArg) {
         this.$store.dispatch('getAll', strArg)
@@ -63,6 +63,9 @@
       },
       removeListing(strArg, result) {
         this.$store.dispatch('removeListing', { strArg: strArg, result: result, currentUser: this.currentUser })
+      },
+      showUpdateListingForm() {
+
       }
     },
     computed: {

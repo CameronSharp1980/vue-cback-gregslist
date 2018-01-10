@@ -4,42 +4,45 @@
         <form class="form" @submit.prevent="submitPosting('autos')">
             <div class="form-group">
                 <label for="title">Title: </label>
-                <input class="form-control" type="text" name="title" v-model='auto.title' required>
+                <input class="form-control" type="text" name="title" v-model='listing.title' required>
             </div>
             <div class="form-group">
                 <label for="make">Make: </label>
-                <input class="form-control" type="text" name="make" v-model='auto.make' required>
+                <input class="form-control" type="text" name="make" v-model='listing.make' required>
             </div>
             <div class="form-group">
                 <label for="model">Model: </label>
-                <input class="form-control" type="text" name="model" v-model='auto.model' required>
+                <input class="form-control" type="text" name="model" v-model='listing.model' required>
             </div>
             <div class="form-group">
                 <label for="color">Color: </label>
-                <input class="form-control" type="text" name="color" v-model='auto.color' required>
+                <input class="form-control" type="text" name="color" v-model='listing.color' required>
             </div>
             <div class="form-group">
                 <label for="year">Year: </label>
-                <input class="form-control" type="text" name="year" v-model='auto.year' required>
+                <input class="form-control" type="text" name="year" v-model='listing.year' required>
             </div>
             <div class="form-group">
                 <label for="autoDescription">Description: </label>
-                <input class="form-control" type="text" name="autoDescription" v-model='auto.autoDescription' required>
+                <input class="form-control" type="text" name="autoDescription" v-model='listing.autoDescription' required>
             </div>
             <div class="form-group">
                 <label for="location">Location: </label>
-                <input class="form-control" type="text" name="location" v-model='auto.location' required>
+                <input class="form-control" type="text" name="location" v-model='listing.location' required>
             </div>
             <div class="form-group">
                 <label for="imageURL">ImageURL: </label>
-                <input class="form-control" type="text" name="imageURL" v-model='auto.imageURL' required>
+                <input class="form-control" type="text" name="imageURL" v-model='listing.imageURL' required>
             </div>
             <div class="form-group">
                 <label for="price">Price: </label>
-                <input class="form-control" type="text" name="price" v-model='auto.price' required>
+                <input class="form-control" type="text" name="price" v-model='listing.price' required>
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="formState == 'submit'">
                 <button type="submit">Submit</button>
+            </div>
+            <div class="form-group" v-if="formState == 'update'">
+                <button type="submit">Update</button>
             </div>
         </form>
     </div>
@@ -47,10 +50,10 @@
 
 <script>
     export default {
-        name: 'autosform',
+        name: 'listingform',
         data() {
             return {
-                auto: {
+                listing: {
                     title: '',
                     make: '',
                     model: '',
