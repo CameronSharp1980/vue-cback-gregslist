@@ -34,8 +34,13 @@ var store = new Vuex.Store({
         authenticate({ commit, dispatch }) {
             account('authenticate')
                 .then(res => {
-                    commit('setUser', res.data.data)
-                    router.push({ name: "Home" })
+                    // console.log("Response @ auth: ", res.data)
+                    if (res.data) {
+                        commit('setUser', res.data)
+                        router.push({ name: "Home" })
+                    } else {
+                        router.push({ name: "Login" })
+                    }
                 })
                 .catch(() => {
                     router.push({ name: "Login" })
