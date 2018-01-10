@@ -18,9 +18,9 @@
         <div class="col-sm-3 thumbnail" v-for="result in searchResults">
           <img :src="result.imageURL"> {{result.title}} ${{result.price}}
           <div v-if="currentUser.id === result.creatorId">
-          <!-- add a category prop to all models that has it's category(ie. autos) and change 'autos' in removeListing to be result.category -->
+            <!-- add a category prop to all models that has it's category(ie. autos) and change 'autos' in removeListing to be result.category -->
             <button @click="removeListing('autos', result)">Remove</button>
-            <button @click="updateListing('autos)'">Update</button>
+            <button @click="updateListing('autos')">Update</button>
           </div>
         </div>
       </div>
