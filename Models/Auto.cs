@@ -9,8 +9,8 @@ namespace vue_cback_gregslist.Models
         public string Model { get; set; }
         public int Year { get; set; }
         public string Color { get; set; }
-        public string AutoDescription { get; set; }
-        public string Location { get; set; }
+        public string ListingDescription { get; set; }
+        public string ListingLocation { get; set; }
         public string ImageURL { get; set; }
         public double Price { get; set; }
         

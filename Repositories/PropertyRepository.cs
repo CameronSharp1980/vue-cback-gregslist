@@ -34,15 +34,18 @@ namespace vue_cback_gregslist.Repositories
             //the new { Property.Name.... etc} is the object constructor that will be used in the insert query.
             System.Console.WriteLine("Property in repo: " + property);
             int id = _db.ExecuteScalar<int>(@"
-                        INSERT INTO sharpproperties (Title, Zoning, SquareFootage, Color, PropertyDescription, ImageURL, Price)
-                        VALUES(@Title, @Zoning, @SquareFootage, @Color, @PropertyDescription, @ImageURL, @Price);
+                        INSERT INTO sharpproperties (Title, Zoning, SquareFootage, YearBuilt, Color, ListingDescription, ListingLocation, ImageURL, Price)
+                        VALUES(@Title, @Zoning, @SquareFootage, @YearBuilt, @Color, @ListingDescription, @ListingLocation, @ImageURL, @Price);
                         SELECT LAST_INSERT_ID()", new
             {
+                property.CreatorId,
                 property.Title,
                 property.Zoning,
                 property.SquareFootage,
+                property.YearBuilt,
                 property.Color,
-                property.PropertyDescription,
+                property.ListingDescription,
+                property.ListingLocation,
                 property.ImageURL,
                 property.Price
             });
