@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <Error></Error>
+    <Message></Message>
     <router-view/>
   </div>
 </template>
 
 <script>
   import Error from './components/Error'
+  import Message from './components/Message'
   export default {
     name: 'app',
     data() {
@@ -15,10 +17,11 @@
       }
     },
     mounted() {
-      this.$store.dispatch('authenticate')
+      // this.$store.dispatch('authenticate')
     },
     components: {
-      Error
+      Error,
+      Message
     },
     methods: {
 

@@ -2,9 +2,21 @@
   <div class="home">
     <h1>HOME</h1>
     <div>
+
       <button @click="togglePostCategories">+</button>
       <div v-if=showCategories>
+        Categories go here
+      </div>
+
+      <button @click="toggleAutosForm">Show Autos Form</button>
+      <div v-if="showAutosForm">
         <AutosForm></AutosForm>
+      </div>
+
+      <div v-if="showSearchResults">
+        <div class="col-sm-3" v-for="result in results">
+          {{result.Title}}
+        </div>
       </div>
 
     </div>
@@ -18,7 +30,10 @@
     name: 'Home',
     data() {
       return {
-        showCategories: false
+        showCategories: false,
+        showAutosForm: false,
+        showSearchResults: false
+
       }
     },
     mounted() {
@@ -29,11 +44,16 @@
         this.$store.dispatch('logout')
       },
       togglePostCategories() {
-        showCategories = !showCategories
+        this.showCategories = !this.showCategories
+      },
+      toggleAutosForm() {
+        this.showAutosForm = !this.showAutosForm
       }
     },
     computed: {
-
+      autos() {
+        return this.$store.state.searchResults
+      }
     },
     components: {
       AutosForm

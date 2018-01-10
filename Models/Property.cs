@@ -10,5 +10,6 @@ namespace vue_cback_gregslist.Models
         public string PropertyDescription { get; set; }
         public string ImageURL { get; set; }
         public double Price { get; set; }
+        //add yearBuilt, creator id
     }
 }

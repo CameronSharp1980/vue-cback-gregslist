@@ -47,7 +47,6 @@ namespace vue_cback_gregslist.Repositories
             });
             auto.Id = id;
             return auto;
-
         }
 
         public Auto GetOneByIdAndUpdate(int id, Auto auto)

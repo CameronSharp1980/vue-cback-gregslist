@@ -20,7 +20,10 @@ Vue.use(Vuex)
 var store = new Vuex.Store({
     state: {
         error: {},
-        user: {}
+        message: "",
+        user: {},
+        searchResults: {},
+        userPostings: {}
     },
     mutations: {
         handleError(state, err) {
@@ -28,9 +31,15 @@ var store = new Vuex.Store({
         },
         setUser(state, user) {
             state.user = user
+        },
+        setMessage(state, msg) {
+            state.message = msg
         }
+
     },
     actions: {
+
+        //#region UserAuth
         authenticate({ commit, dispatch }) {
             account('authenticate')
                 .then(res => {
@@ -75,7 +84,25 @@ var store = new Vuex.Store({
                 .catch(err => {
                     commit('handleError', err)
                 })
+        },
+        //#endregion
+
+        //#region Listing Methods
+        submitPosting({ commit, dispatch }, payload) {
+            api.post(payload.strArg, payload.listing)
+                .then(res => {
+                    if (res) {
+                        //res = whole posting or res.data = whole posting?
+                        commit('setMessage', `${payload.strArg} Posting Successful`)
+                    } else {
+                        commit('setMessage', `${payload.strArg} Posting Unsuccessful`)
+                    }
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
         }
+        //#endregion
     }
 })
 

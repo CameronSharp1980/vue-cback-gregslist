@@ -12,5 +12,6 @@ namespace vue_cback_gregslist.Models
         public string MedicalConcerns { get; set; }
         public string ImageURL { get; set; }
         public double Price { get; set; }
+        //add age, creator id
     }
 }

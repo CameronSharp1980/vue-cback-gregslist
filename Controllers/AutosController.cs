@@ -37,7 +37,11 @@ namespace vue_cback_gregslist.Controllers
         [HttpPost]
         public Auto Post([FromBody]Auto auto)
         {
-            return db.Add(auto);
+            if (ModelState.IsValid)
+            {
+                return db.Add(auto);
+            }
+            return null;
         }
 
         // PUT api/values/5
