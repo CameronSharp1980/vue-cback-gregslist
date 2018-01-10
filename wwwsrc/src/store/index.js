@@ -22,7 +22,8 @@ var store = new Vuex.Store({
         error: {},
         message: "",
         user: {},
-        formState = "",
+        formType: "",
+        listingType: "",
         searchResults: [],
         userPostings: {}
     },
@@ -40,6 +41,12 @@ var store = new Vuex.Store({
         setSearchResults(state, results) {
             state.searchResults = results
             // console.log(state.searchResults)
+        },
+        setFormType(state, formTypeArg) {
+            state.formType = formTypeArg
+        },
+        setListingType(state, listingTypeArg) {
+            state.listingType = listingTypeArg
         }
 
     },
@@ -101,13 +108,13 @@ var store = new Vuex.Store({
         submitPosting({ commit, dispatch }, payload) {
             payload.listing.CreatorId = payload.creatorId
             console.log(payload.listing)
-            api.post(payload.strArg, payload.listing)
+            api.post(payload.listingType, payload.listing)
                 .then(res => {
                     if (res) {
                         //res = whole posting or res.data = whole posting?
-                        commit('setMessage', `${payload.strArg} posting successful`)
+                        commit('setMessage', `${payload.listingType} posting successful`)
                     } else {
-                        commit('setMessage', `${payload.strArg} posting was not successful`)
+                        commit('setMessage', `${payload.listingType} posting was not successful`)
                     }
                 })
                 .catch(err => {
@@ -149,8 +156,12 @@ var store = new Vuex.Store({
             } else {
                 commit('handleError', { message: 'You are not the owner of that listing, and therefore not authorized to remove that listing.' })
             }
-        }
+        },
         //#endregion
+        changeFormState({ commit, dispatch }, payload) {
+            commit('setFormType', payload.formType)
+            commit('setListingType', payload.listingType)
+        }
     }
 })
 

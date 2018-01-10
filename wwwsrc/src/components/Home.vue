@@ -3,15 +3,24 @@
     <h1>HOME</h1>
     <!-- current user is {{currentUser.id}} -->
     <div>
-
-      <button @click="togglePostCategories">+</button>
-      <div v-if=showCategories>
-        <button @click="getAll('autos')">Get Autos</button>
+      <div class="categoryButtons">
+        <button @click="toggleSearchCategories">Show Search Categories</button>
+        <div v-if=showSearchCategories>
+          <button @click="getAll('autos')">Get Autos</button>
+          <button @click="getAll('animals')">Get Animals</button>
+          <button @click="getAll('properties')">Get Properties</button>
+        </div>
       </div>
-
-      <button @click="toggleListingForm('submit', 'auto')">Show Autos Form</button>
+      <div class="listingFormButtons">
+        <button @click="toggleListingButtons">Post New Listing</button>
+        <div v-if=showListingButtons>
+          <button @click="toggleListingForm('submit', 'autos')">List New Auto</button>
+          <button @click="toggleListingForm('submit', 'animals')">List New Animal</button>
+          <button @click="toggleListingForm('submit', 'properties')">List New Property</button>
+        </div>
+      </div>
       <div v-if="showListingForm">
-        <AutosForm></AutosForm>
+        <ListingForm></ListingForm>
       </div>
 
       <div v-if="showSearchResults">
@@ -20,7 +29,7 @@
           <div v-if="currentUser.id === result.creatorId">
             <!-- add a category prop to all models that has it's category(ie. autos) and change 'autos' in removeListing to be result.category -->
             <button @click="removeListing('autos', result)">Remove</button>
-            <button @click="toggleListingForm('update', auto)">Update</button>
+            <button @click="toggleListingForm('update', 'autos')">Update</button>
           </div>
         </div>
       </div>
@@ -38,9 +47,10 @@
     name: 'Home',
     data() {
       return {
-        showCategories: false,
+        showSearchCategories: false,
         showListingForm: false,
-        showSearchResults: false
+        showSearchResults: false,
+        showListingButtons: false
       }
     },
     mounted() {
@@ -50,12 +60,16 @@
       logout() {
         this.$store.dispatch('logout')
       },
-      togglePostCategories() {
-        this.showCategories = !this.showCategories
+      toggleSearchCategories() {
+        this.showSearchCategories = !this.showSearchCategories
       },
-      toggleListingForm() {
+      toggleListingForm(formType, listingType) {
         this.showListingForm = !this.showListingForm
-        //dispatch autos to store to change the form state
+        this.$store.dispatch('changeFormState', { formType: formType, listingType: listingType })
+        //dispatch category to store to change the form state
+      },
+      toggleListingButtons() {
+        this.showListingButtons = !this.showListingButtons
       },
       getAll(strArg) {
         this.$store.dispatch('getAll', strArg)
@@ -63,9 +77,6 @@
       },
       removeListing(strArg, result) {
         this.$store.dispatch('removeListing', { strArg: strArg, result: result, currentUser: this.currentUser })
-      },
-      showUpdateListingForm() {
-
       }
     },
     computed: {
@@ -77,7 +88,7 @@
       }
     },
     components: {
-      AutosForm
+      ListingForm
 
     }
   }
