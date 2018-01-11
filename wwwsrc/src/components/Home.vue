@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>HOME</h1>
-    <!-- current user is {{currentUser.id}} -->
+    <!-- Still need to create update function on the front end. Routes work on the backend. -->
     <div>
       <div class="categoryButtons">
         <button @click="toggleSearchCategories">Show Search Categories</button>
