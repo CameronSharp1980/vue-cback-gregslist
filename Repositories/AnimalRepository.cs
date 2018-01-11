@@ -32,10 +32,11 @@ namespace vue_cback_gregslist.Repositories
         {
             //INSERT INTO sharpanimals - inserts the arguments to the matching parameters(order is important), then executes a separate SELECT query to get the ID of the last inserted item, and then auto increments to get a new id(provided auto increment is set on the table).
             //the new { animal.Name.... etc} is the object constructor that will be used in the insert query.
-            int id = _db.ExecuteScalar<int>($@"INSERT INTO sharpanimals (Title, AnimalName, Species, Breed, Age, Color, ListingDescription, ListingLocation, MedicalConcerns, ImageURL, Price)
-                                            VALUES(@Title, @AnimalName, @Species, @Breed, @Age, @Color, @ListingDescription, @ListingLocation, @MedicalConcerns, @ImageURL, @Price);
+            int id = _db.ExecuteScalar<int>($@"INSERT INTO sharpanimals (CreatorId, Title, AnimalName, Species, Breed, Age, Color, ListingDescription, ListingLocation, MedicalConcerns, ImageURL, Price)
+                                            VALUES(@CreatorId, @Title, @AnimalName, @Species, @Breed, @Age, @Color, @ListingDescription, @ListingLocation, @MedicalConcerns, @ImageURL, @Price);
                                             SELECT LAST_INSERT_ID()", new
             {
+                animal.CreatorId,
                 animal.Title,
                 animal.AnimalName,
                 animal.Species,

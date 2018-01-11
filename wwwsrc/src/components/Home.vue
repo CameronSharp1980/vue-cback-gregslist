@@ -28,14 +28,14 @@
           <img :src="result.imageURL"> {{result.title}} ${{result.price}}
           <div v-if="currentUser.id === result.creatorId">
             <!-- add a category prop to all models that has it's category(ie. autos) and change 'autos' in removeListing to be result.category -->
-            <button @click="removeListing('autos', result)">Remove</button>
+            <button @click="removeListing(result)">Remove</button>
             <button @click="toggleListingForm('update', 'autos')">Update</button>
           </div>
         </div>
       </div>
 
     </div>
-    <div>
+    <div class="logoutDiv">
       <button @click="logout">LOGOUT</button>
     </div>
   </div>
@@ -72,11 +72,12 @@
         this.showListingButtons = !this.showListingButtons
       },
       getAll(strArg) {
+        this.$store.dispatch('changeFormState', { formType: "", listingType: strArg })
         this.$store.dispatch('getAll', strArg)
         this.showSearchResults = !this.showSearchResults
       },
-      removeListing(strArg, result) {
-        this.$store.dispatch('removeListing', { strArg: strArg, result: result, currentUser: this.currentUser })
+      removeListing(result) {
+        this.$store.dispatch('removeListing', { strArg: this.listingType, result: result, currentUser: this.currentUser })
       }
     },
     computed: {
@@ -85,6 +86,9 @@
       },
       currentUser() {
         return this.$store.state.user
+      },
+      listingType() {
+        return this.$store.state.listingType
       }
     },
     components: {

@@ -34,8 +34,8 @@ namespace vue_cback_gregslist.Repositories
             //the new { Property.Name.... etc} is the object constructor that will be used in the insert query.
             System.Console.WriteLine("Property in repo: " + property);
             int id = _db.ExecuteScalar<int>(@"
-                        INSERT INTO sharpproperties (Title, Zoning, SquareFootage, YearBuilt, Color, ListingDescription, ListingLocation, ImageURL, Price)
-                        VALUES(@Title, @Zoning, @SquareFootage, @YearBuilt, @Color, @ListingDescription, @ListingLocation, @ImageURL, @Price);
+                        INSERT INTO sharpproperties (CreatorId, Title, Zoning, SquareFootage, YearBuilt, Color, ListingDescription, ListingLocation, ImageURL, Price)
+                        VALUES(@CreatorId, @Title, @Zoning, @SquareFootage, @YearBuilt, @Color, @ListingDescription, @ListingLocation, @ImageURL, @Price);
                         SELECT LAST_INSERT_ID()", new
             {
                 property.CreatorId,
@@ -59,11 +59,14 @@ namespace vue_cback_gregslist.Repositories
             //Queries for the first Property that matches the id passed in. If it doesn't find it, it defaults to handle the error gracefully without crashing. If it finds the id, it updates the fields with the data you are sending.
             return _db.QueryFirstOrDefault<Property>($@"
                 UPDATE SharpProperties SET  
+                    CreatorId = @CreatorId,
                     Title = @Title,
                     Zoning = @Zoning,
                     Squarefootage = @Squarefootage,
+                    YearBuilt = @YearBuilt,
                     Color = @Color,
-                    PropertyDescription = @PropertyDescription,
+                    ListingDescription = @ListingDescription,
+                    ListingLocation = @ListingLocation,
                     ImageURL = @ImageURL,
                     Price = @Price
                 WHERE Id = {id};

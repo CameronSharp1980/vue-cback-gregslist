@@ -120,6 +120,12 @@ var store = new Vuex.Store({
                 .catch(err => {
                     commit('handleError', err)
                 })
+                .then(res => {
+                    dispatch('getAll', payload.listingType)
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
         },
         getAll({ commit, dispatch }, strArg) {
             api(strArg)
